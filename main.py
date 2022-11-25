@@ -13,6 +13,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib, ssl
 
+#Domain name
 DOMAIN = os.getenv('DOMAIN')
 
 
@@ -24,7 +25,7 @@ def example_json_result_output(
 ) -> None:
     json_output = SslyzeOutputAsJson(
         server_scan_results=[ServerScanResultAsJson.from_orm(result) for result in all_server_scan_results_1],
-        invalid_server_strings=[],  # Not needed here - specific to the CLI interface
+        invalid_server_strings=[],  
         date_scans_started=date_scans_started,
         date_scans_completed=date_scans_completed,
     )
