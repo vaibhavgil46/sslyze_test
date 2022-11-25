@@ -1,0 +1,34 @@
+stages:
+  - build
+  - scan
+  - report
+
+build:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+      changes:
+        - Dockerfile
+include:
+  - project: 'amitdalal/shellcheck'
+    ref: master
+    file: '/ci.yml'
+  - template: Jobs/Build.gitlab-ci.yml
+
+
+
+
+report:
+  stage: report
+  needs:
+    - wpscan
+  image: "${CI_REGISTRY_IMAGE}/${CI_COMMIT_REF_NAME}"
+  before_script:
+    - cat data.json | python json2yaml.py | tee result.yaml
+  script:
+    python main.py
+  only:
+    - web
+    - schedules
+    - chat
+    - trigger
+
