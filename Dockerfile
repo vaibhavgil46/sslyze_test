@@ -1,5 +1,8 @@
-FROM python:alpine
+FROM python:latest
 
 WORKDIR /app
+
 RUN pip install --upgrade pip && \
-    pip install --upgrade sslyze pyyaml
+    pip install pyyaml
+
+RUN pip install sslyze
