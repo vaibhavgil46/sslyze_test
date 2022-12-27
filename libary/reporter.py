@@ -49,4 +49,3 @@ def send_report(recipients, attachment_file, region_name):
     print(response)
 
 # Example usage of the send_report function
-send_report(["ad@webscoot.io", "tech@webscoot.io"], "report.yaml", "ap-south-1")

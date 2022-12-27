@@ -15,8 +15,9 @@ from email.mime.text import MIMEText
 import smtplib, ssl
 import json
 import yaml
-
+from libary import send_report
 # variables
+send_report(["ad@webscoot.io", "tech@webscoot.io"], "report.yaml", "ap-south-1")
 
 DOMAIN = os.getenv("DOMAIN")
 EMAIL = os.getenv("EMAIL")
