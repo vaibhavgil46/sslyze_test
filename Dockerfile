@@ -3,7 +3,7 @@ FROM python:latest
 WORKDIR /app
 
 RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
-    pip install --upgrade sslyze pyyaml
+    pip install --upgrade -r requirements.txt
 
 ENV DOMAIN -h
 ENV MAIL -h
