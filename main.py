@@ -11,10 +11,10 @@ from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import smtplib, ssl
+from libary import reporter
 
-#Domain name
-DOMAIN = os.getenv('DOMAIN')
+# use below to send the email.
+# reporter.send_report("ad@webscoot.io", "report.yaml", "ap-south-1", "webscoot.io")
 
 
 def example_json_result_output(
