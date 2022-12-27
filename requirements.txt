@@ -1,2 +1,3 @@
 sslyze
 pyyaml
+boto3

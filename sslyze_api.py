@@ -1,4 +1,5 @@
 import sys
+import os
 from sslyze import ServerScanRequest
 from sslyze import ServerNetworkLocation
 from sslyze import Scanner
@@ -15,6 +16,11 @@ import smtplib, ssl
 import json
 import yaml
 
+# variables
+
+DOMAIN = os.getenv("DOMAIN")
+EMAIL = os.getenv("EMAIL")
+TYPE = os.getenv("TYPE")
 
 def json_to_yaml():
     with open("report.json", "r") as f:
