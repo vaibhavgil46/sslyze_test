@@ -8,7 +8,7 @@ def send_report(recipients, attachment_file, region_name):
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
     # Set the email parameters
-    sender = "no-reply@serverlessguy.com"
+    sender = "sslyze@noc.webscoot.io"
     domain = os.getenv('DOMAIN')
     subject = f"SSL info about Domain {domain} on {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
     body_text = f"Hi Team,\n\nPlease find the SSL report for the {domain} attached with this email.\n\nRegards,\nThe Serverless Guy"
@@ -49,4 +49,4 @@ def send_report(recipients, attachment_file, region_name):
     print(response)
 
 # Example usage of the send_report function
-send_report(["recipient1@example.com", "recipient2@example.com"], "report.yaml", "ap-south-1")
+send_report(["ad@webscoot.io", "tech@webscoot.io"], "report.yaml", "ap-south-1")
