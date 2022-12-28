@@ -1,4 +1,3 @@
-import sys
 import os
 from sslyze import ServerScanRequest
 from sslyze import ServerNetworkLocation
@@ -7,12 +6,8 @@ from sslyze import ServerHostnameCouldNotBeResolved
 from sslyze import ServerScanStatusEnum
 from sslyze import SslyzeOutputAsJson
 from sslyze import ServerScanResultAsJson
+from libary import reporter
 from datetime import datetime
-from email import encoders
-from email.mime.base import MIMEBase
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-import smtplib, ssl
 import json
 import yaml
 
@@ -71,7 +66,7 @@ def scan():
                 f"\nError: Could not connect to {result.server_location.hostname}:"
                 f" {result.connectivity_error_trace}"
             )
-            return -1
+            return False
         assert result.scan_result
 
     json_file_out = f"api_sample_results.json"
@@ -79,89 +74,37 @@ def scan():
     return 1
 
 
-def send_mail(type_of_file):
-    port = 587  # For starttls
-    smtp_server = "smtp.gmail.com"
-    sender_email = "a@gm"
-    receiver_email = MAIL
-    password = "sad"
-    body = f"SSLYZE Report for {DOMAIN} at {datetime.utcnow()}."
-
-    message = MIMEMultipart()
-    message["From"] = sender_email
-    message["To"] = receiver_email
-    message["Subject"] = "Attachment from python"
-    message["Bcc"] = receiver_email
-
-    message.attach(MIMEText(body, "plain"))
-
-    filename = f"report.{TYPE}"
-    with open(filename, "rb") as attachment:
-        part = MIMEBase("application", "octet-stream")
-        part.set_payload(attachment.read())
-
-    encoders.encode_base64(part)
-
-    part.add_header(
-        "Content-Disposition",
-        f"attachment; filename= {filename}",
-    )
-
-    message.attach(part)
-    text = message.as_string()
-
-    context = ssl.create_default_context()
-    with smtplib.SMTP(smtp_server, port) as server:
-        server.ehlo()  # Can be omitted
-        server.starttls(context=context)
-        server.ehlo()  # Can be omitted
-        server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, text)
-
-
 def print_help():
     print('''
             Enter a valid domain name as the argument and you will be mailed a report containing information of its SSL:
             Environment variable for DOMAIN and MAIL are given below:
             -e "DOMAIN=google.com"
-            -e "MAIL=temp@gmail.com"
+            -e "EMAIL=temp@gmail.com"
 
             By default you will receive the report in yaml format if you don't provide the option for it.
             You can also get the file in the json format you can enter the environment variable TYPE for that i.e.
             -e "TYPE=--json"
 
             If you are executing this script from command line enter domain and mail as arguments while executing.
-            for eg: python3 sslyze.py google.com temp@gmail.com --yaml
+            for eg: python3 sslyze_api.py -e DOMAIN=avgh -e EMAIL=temp@gmail.com -e TYPE=--json
                   ''')
 
-flag = True
-if len(sys.argv) < 2:
-    print("Enter a domain name and your mail where you want the report sent. Enter options -h or --help for help:")
-    flag = False
-elif len(sys.argv) < 3:
-    if sys.argv[1] in ("-h", "--help", "--Help"):
-        print_help()
-    else:
-        print("Enter a domain name and your mail where you want the report sent. Enter options -h or --help for help:")
-    flag= False
-else:
-    DOMAIN = str(sys.argv[1])
-    MAIL = str(sys.argv[2])
-    TYPE = "yaml"
-    if len(sys.argv) == 4:
-        if sys.argv[3] == "--json":
-            TYPE="json"
-        elif sys.argv[3] == "--yaml":
-            TYPE="yaml"
-        else:
-            flag= False
 
-    if sys.argv[2] in ("-h", "--help", "--Help") or flag == False:
-        print_help()
+flag = True
+
+if DOMAIN in ('-h',None) or EMAIL in ('-h',None):
+    print_help()
+    flag = False
+
+if flag == True:
+    flag = scan()
+
+if flag == True:
+    if TYPE == '--yaml':
+        json_to_yaml()
+        reporter.send_report(EMAIL, "report.yaml", "ap-south-1", DOMAIN)
+    elif TYPE == 'json':
+        reporter.send_report(EMAIL, "report.json", "ap-south-1", DOMAIN)
     else:
-        flag = scan()
-        if flag == True:
-            json_to_yaml()
-            send_mail(TYPE)
-        else:
-            print("Enter options -h or --help for help")
+        print_help()
+
