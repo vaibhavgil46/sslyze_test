@@ -12,7 +12,7 @@ COPY ./libary/* /app/libary/
 ENV DOMAIN -h 
 ENV EMAIL -h
 
-COPY ./sslyze_api.py ./
-ENV TYPE yaml
+COPY ./main.py ./
+ENV TYPE --yaml
 
-CMD [ "sh", "-c", "python3 ./sslyze_api.py -e DOMAIN=$DOMAIN -e EMAIL=$EMAIL -e TYPE=$TYPE" ]
+CMD [ "sh", "-c", "python3 ./main.py -e DOMAIN=$DOMAIN -e EMAIL=$EMAIL -e TYPE=$TYPE" ]
