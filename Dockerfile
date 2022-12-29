@@ -13,6 +13,6 @@ ENV DOMAIN -h
 ENV EMAIL -h
 
 COPY ./main.py ./
-ENV TYPE --yaml
+ENV TYPE yaml
 
 CMD [ "sh", "-c", "python3 ./main.py -e DOMAIN=$DOMAIN -e EMAIL=$EMAIL -e TYPE=$TYPE" ]

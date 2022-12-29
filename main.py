@@ -28,4 +28,3 @@ if flag == True:
         reporter.send_report(EMAIL, "report.json", "ap-south-1", DOMAIN)
     else:
         help.print_help()
-
