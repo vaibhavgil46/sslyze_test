@@ -3,7 +3,6 @@ import yaml
 
 
 def json_to_yaml():
-    print("2")
     with open("report.json", "r") as f:
         json_data = json.load(f)
 
