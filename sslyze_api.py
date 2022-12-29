@@ -83,10 +83,10 @@ def print_help():
 
             By default you will receive the report in yaml format if you don't provide the option for it.
             You can also get the file in the json format you can enter the environment variable TYPE for that i.e.
-            -e "TYPE=--json"
+            -e "TYPE=json"
 
             If you are executing this script from command line enter domain and mail as arguments while executing.
-            for eg: python3 sslyze_api.py -e DOMAIN=avgh -e EMAIL=temp@gmail.com -e TYPE=--json
+            for eg: python3 sslyze_api.py -e DOMAIN=google.com -e EMAIL=temp@gmail.com -e TYPE=json
                   ''')
 
 
@@ -100,7 +100,7 @@ if flag == True:
     flag = scan()
 
 if flag == True:
-    if TYPE == '--yaml':
+    if TYPE == 'yaml':
         json_to_yaml()
         reporter.send_report(EMAIL, "report.yaml", "ap-south-1", DOMAIN)
     elif TYPE == 'json':
